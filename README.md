@@ -1,10 +1,10 @@
-# PCM Template Projects
+# PCM 基础架构模板项目
 
-PCM Template Projects is the management repository for business-free architecture templates used during PCM's manual market-validation stage.
+本仓库是 PCM 在人工市场验证阶段使用的基础架构模板上层管理仓库。
 
-This repository manages repository locations, template indexes, prepared technology combinations, template admission rules, and architecture-selection guidance. It does not contain customer projects or concrete frontend/backend templates.
+它负责管理语言仓库位置、正式模板索引、预设技术组合、模板准入规则和架构选型标准；不存放客户项目，也不直接存放具体的前端或后端模板代码。
 
-## Workspace
+## 工作区结构
 
 ```text
 template-projects/
@@ -18,30 +18,32 @@ template-projects/
     └── pcm-python-templates/
 ```
 
-The repositories under `repositories/` are independent Git repositories and are ignored by the root repository.
+`repositories/` 下的两个语言仓库都是独立 Git 仓库，并由上层仓库通过 `.gitignore` 忽略。
 
-## Management Files
+## 管理文件
 
-- `repositories.yaml`: language repository locations.
-- `templates.yaml`: official template index.
-- `profiles.yaml`: prepared frontend/backend combinations.
-- `docs/template-contract.md`: minimum requirements for templates.
-- `docs/selection-guide.md`: architecture-selection criteria.
+- `repositories.yaml`：语言仓库及其本地路径。
+- `templates.yaml`：正式模板索引。
+- `profiles.yaml`：预设前后端技术组合。
+- `docs/template-contract.md`：模板必须满足的最低要求。
+- `docs/selection-guide.md`：根据项目需求选择架构组合的标准。
 
-## Commands
+## 常用命令
 
-Show all local repository states:
+查看所有本地仓库状态：
 
 ```bash
 ./scripts/status-all.sh
 ```
 
-Clone configured missing repositories without updating existing repositories:
+在配置真实远程地址后，克隆本地缺失的语言仓库：
 
 ```bash
 ./scripts/bootstrap.sh
 ```
 
-## Current Scope
+`bootstrap.sh` 不会拉取、修改或覆盖已经存在的仓库。
 
-No concrete architecture templates or prepared profiles are included in the first stage. They will be added separately after their architecture choices are discussed and implemented.
+## 当前范围
+
+当前阶段只建立仓库管理底座，不包含任何具体架构模板或预设技术组合。具体模板将在完成对应架构讨论后分别开发并加入语言仓库。

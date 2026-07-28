@@ -1,68 +1,98 @@
-# PCM Architecture Selection Guide
+# PCM 架构选型指南
 
-## Objective
+## 目标
 
-Given a customer requirement, recommend the simplest existing architecture combination that satisfies the hard requirements. AI provides analysis and alternatives; the user makes the final decision.
+拿到客户需求后，推荐能够满足硬性要求的最简单现有架构组合。AI 负责分析、说明理由和提供备选方案，最终决定由用户作出。
 
-## Selection Principles
+## 选型原则
 
-1. Hard requirements override default preferences.
-2. Prefer an existing combination in `profiles.yaml` when it fits.
-3. Choose the simplest architecture that satisfies the requirement.
-4. Do not add complexity for hypothetical future requirements.
-5. State clearly when no existing combination is suitable.
-6. Distinguish an existing combination from a newly proposed combination.
+1. 硬性要求优先于默认偏好。
+2. `profiles.yaml` 中已有组合能够满足需求时，优先使用现有组合。
+3. 选择能够完成交付的最简单架构。
+4. 不为尚未发生的假设性需求提前增加复杂度。
+5. 没有合适的现有组合时必须明确说明。
+6. 必须区分现有组合与新提出的组合建议。
 
-## Business Boundary
+## 业务范围判断
 
-First determine whether the project belongs to the current PCM scope. Web applications, content sites, internal systems, prototypes, and standard Python APIs may fit. Native mobile applications, games, hardware-dependent systems, strong algorithm projects, and production-grade regulated systems may fall outside the current scope.
+首先判断项目是否属于 PCM 当前阶段适合承接的范围。
 
-## Frontend Criteria
+通常可以考虑：
 
-### Platform
+- Web 应用；
+- 内容站点；
+- 企业内部系统；
+- 原型项目；
+- 标准 Python API 服务。
 
-Determine whether the target is Web/H5, desktop, mobile application, mini program, content site, or a backend-only service.
+通常需要谨慎判断或可能超出当前范围：
 
-### Rendering and SEO
+- 原生移动应用；
+- 游戏；
+- 强硬件依赖系统；
+- 强算法项目；
+- 需要生产级合规保障的受监管系统。
 
-- SEO or server rendering required: consider an SSR/SSG-capable template.
-- Internal application without SEO: a SPA is usually sufficient.
-- Content-first website or documentation: prefer a content-oriented architecture.
+## 前端选型标准
 
-### Interface Characteristics
+### 目标平台
 
-- Data-heavy tables, forms, filters, and trees: prefer a component system optimized for enterprise interfaces.
-- Custom visual identity or AI/SaaS product interface: prefer a more composition-oriented UI system.
-- Material Design requirement: prefer a Material-based system.
+先确认目标属于以下哪种工程形态：
 
-### Deployment and Constraints
+- Web/H5；
+- 桌面应用；
+- 移动应用；
+- 小程序；
+- 内容站点；
+- 纯后端服务。
 
-Respect explicit framework, deployment, static-hosting, browser-runtime, and team-technology constraints.
+### 渲染和 SEO
 
-## Python Backend Criteria
+- 明确要求 SEO 或服务端渲染：考虑支持 SSR/SSG 的模板。
+- 不要求 SEO 的内部应用：通常使用 SPA 即可。
+- 内容优先的官网、博客或文档站：优先考虑内容型架构。
 
-### Need for a Backend
+### 界面特征
 
-Frontend-only prototypes and static content sites may not require a Python backend. Projects requiring databases and business APIs normally do.
+- 大量表格、表单、筛选器和树结构：优先选择面向企业中后台的组件体系。
+- 强调自定义视觉或 AI/SaaS 产品体验：优先选择组合自由度更高的 UI 体系。
+- 明确要求 Material Design：选择 Material 系组件体系。
 
-### Framework Shape
+### 部署和团队约束
 
-- Standard independent REST API: prefer an API-oriented framework.
-- Traditional full framework or built-in administration ecosystem: consider a full-stack web framework.
-- Very small API surface: consider a lightweight framework.
+必须尊重需求中明确提出的框架、部署平台、静态托管、浏览器运行环境和团队技术栈限制。
 
-### Database and I/O
+## Python 后端选型标准
 
-- Choose an ORM/migration template only when persistent data is required.
-- Do not select a complex asynchronous architecture for ordinary CRUD solely because it appears more advanced.
-- Consider asynchronous I/O when the requirement actually involves substantial concurrent network or external-service work.
+### 是否需要后端
 
-## Combination Decision
+前端原型和静态内容站点可能不需要 Python 后端。需要数据库、业务 API 或服务端处理时，通常需要后端。
 
-1. Identify the engineering shape and hard constraints.
-2. Read the current combinations in `profiles.yaml`.
-3. Compare the referenced templates when concrete templates exist.
-4. Recommend the closest existing combination when it fully satisfies the requirement.
-5. If no existing combination fits, explain the mismatch and optionally propose a new combination as a proposal, not as an existing PCM asset.
+### 框架形态
 
-A recommendation only needs to state the engineering shape, selected or closest combination, reasons, and important limitations. No selection record or customer tracking file is required.
+- 标准独立 REST API：优先考虑 API 导向框架。
+- 需要传统全功能框架或内置管理后台生态：考虑完整 Web 框架。
+- 接口规模非常小：可以考虑轻量框架。
+
+### 数据库与 I/O
+
+- 只有明确需要持久化数据时，才选择包含 ORM 和迁移工具的模板。
+- 普通 CRUD 不应仅因为“异步更先进”就选择复杂异步架构。
+- 确实存在大量并发网络请求或外部服务调用时，再重点考虑异步 I/O。
+
+## 组合决策步骤
+
+1. 判断项目的工程形态和硬性约束。
+2. 读取 `profiles.yaml` 中当前已有的技术组合。
+3. 已存在具体模板时，比较相关模板的技术事实。
+4. 现有组合能够完整满足需求时，推荐最接近且最简单的组合。
+5. 没有现有组合适用时，说明不匹配原因；必要时可以提出新组合，但必须标记为建议，不得描述成现有 PCM 资产。
+
+选型答复只需说明：
+
+- 项目工程形态；
+- 推荐或最接近的组合；
+- 推荐理由；
+- 重要限制或不匹配点。
+
+不需要生成选型记录文件，也不在本仓库跟踪客户项目。

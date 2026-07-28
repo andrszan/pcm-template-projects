@@ -1,9 +1,15 @@
-# Local Template Repositories
+# 本地模板仓库
 
-This directory contains independent Git repositories used by the PCM template workspace.
+本目录用于放置 PCM 模板工作区中的独立语言仓库。
 
-The root `template-projects` repository does not track the contents of these repositories. Cloning the root repository therefore does not automatically clone them.
+上层 `template-projects` 仓库不会跟踪这些语言仓库的内容。因此，只克隆上层仓库不会自动获得前端和 Python 模板仓库。
 
-Use `../scripts/bootstrap.sh` after real remote URLs are configured in `../repositories.yaml`, or create the repositories locally.
+配置真实远程地址后，可以运行：
 
-Do not run `git clean -fdx` from the root workspace: ignored nested repository directories could be removed.
+```bash
+../scripts/bootstrap.sh
+```
+
+也可以直接在对应路径创建或克隆语言仓库。
+
+不要在工作区根目录执行 `git clean -fdx`。两个语言仓库属于上层仓库的 ignored 目录，这类清理命令可能直接删除整个语言仓库。

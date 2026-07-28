@@ -1,16 +1,22 @@
-# PCM Template Workspace Instructions
+# PCM 模板工作区协作规则
 
-## Repository Boundaries
+## 语言规则
 
-This workspace contains multiple independent Git repositories.
+- 面向用户和维护者的文档、说明、注释和 Git 提交说明默认使用中文。
+- 文件名、命令、配置键、代码标识符、框架名和其他行业通用技术名词可以保留英文。
+- 除非用户明确要求，不要自行把仓库说明改成英文。
 
-- The root repository manages documentation, indexes, and helper scripts.
-- `repositories/pcm-frontend-templates` is an independent Git repository.
-- `repositories/pcm-python-templates` is an independent Git repository.
-- A clean root `git status` does not mean nested repositories are clean.
-- Never run `git clean -fdx` or an equivalent ignored-file cleanup from the workspace root.
+## 仓库边界
 
-Before editing, identify the owning repository with:
+本工作区包含多个相互独立的 Git 仓库。
+
+- 上层仓库只管理文档、索引和辅助脚本。
+- `repositories/pcm-frontend-templates` 是独立的前端模板仓库。
+- `repositories/pcm-python-templates` 是独立的 Python 模板仓库。
+- 上层仓库 `git status` 干净，不代表两个语言仓库也处于干净状态。
+- 禁止在工作区根目录执行 `git clean -fdx` 或其他可能删除 ignored 内容的等价命令。
+
+修改文件前必须确认当前文件属于哪个仓库：
 
 ```bash
 pwd
@@ -18,24 +24,24 @@ git rev-parse --show-toplevel
 git status --short
 ```
 
-Do not modify multiple repositories unless the task explicitly requires it.
+除非任务明确需要，不要同时修改多个仓库。
 
-## Architecture Selection
+## 架构选型
 
-When asked to recommend an architecture:
+当用户要求推荐项目架构时：
 
-1. Read `profiles.yaml` and `docs/selection-guide.md`.
-2. Inspect referenced template metadata when concrete templates exist.
-3. Prefer an existing prepared combination when it satisfies the requirements.
-4. Recommend the simplest architecture that satisfies the hard requirements.
-5. State clearly when no existing combination is suitable.
-6. Distinguish existing combinations from newly proposed combinations.
-7. Treat the user's decision as final.
+1. 读取 `profiles.yaml` 和 `docs/selection-guide.md`。
+2. 已存在具体模板时，再检查相关模板元数据。
+3. 现有预设组合能满足需求时优先采用现有组合。
+4. 选择能够满足硬性要求的最简单架构。
+5. 没有合适的现有组合时必须明确说明。
+6. 必须区分“已经存在的组合”和“新提出的组合建议”。
+7. AI 只负责分析和建议，最终决定由用户作出。
 
-## Template Maintenance
+## 模板维护
 
-- Do not develop a template directly on a language repository's `main` branch.
-- Use the persistent branch `template/<template-id>` for that template.
-- Merge the latest `main` into the template branch before editing.
-- Do not add customer business code to a base template.
-- Do not merge a template branch into `main` unless explicitly requested.
+- 不得直接在语言仓库的 `main` 分支开发模板。
+- 每个模板使用长期开发分支 `template/<template-id>`。
+- 开始开发前，先将最新 `main` 合入对应模板分支。
+- 不得向基础模板加入客户业务代码。
+- 未经用户明确要求，不得把模板分支合入 `main`。

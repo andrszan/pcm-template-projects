@@ -1,47 +1,47 @@
-# PCM Template Contract
+# PCM 模板契约
 
-## Purpose
+## 目的
 
-A PCM template is a business-free, self-contained, minimally runnable architecture project. It establishes a technology stack and its required engineering configuration without implementing customer or domain behavior.
+PCM 模板是一个业务无关、完全自包含、最小可运行的基础架构项目。它只完成技术选型及必要的工程配置，不实现任何客户业务或领域行为。
 
-## Required Properties
+## 必须满足的要求
 
-Every template must:
+每个模板都必须：
 
-1. contain only architecture choices and required infrastructure configuration;
-2. install, start, and build independently after its directory is copied elsewhere;
-3. avoid runtime dependencies on the language repository root or sibling templates;
-4. use one declared package manager and one matching lock file;
-5. provide `.env.example` when environment variables are required;
-6. contain `template.yaml`, `README.md`, and `AGENTS.md`;
-7. contain the minimum infrastructure tests needed to demonstrate that the template works;
-8. be locally validated before its changes are merged to `main`;
-9. avoid real secrets, personal absolute paths, and generated build output.
+1. 只包含架构选型和必要的基础设施配置；
+2. 在模板目录被单独复制到其他位置后，仍可独立安装、启动和构建；
+3. 不依赖语言仓库根目录或其他模板目录中的运行时文件；
+4. 只使用一种明确的包管理方式，并保留与之匹配的唯一锁文件；
+5. 需要环境变量时提供 `.env.example`；
+6. 包含 `template.yaml`、`README.md` 和 `AGENTS.md`；
+7. 包含能够证明基础设施正常工作的最低限度测试；
+8. 修改合入 `main` 前必须完成本地验证；
+9. 不得包含真实密钥、个人绝对路径和生成后的构建产物。
 
-## Business-Free Boundary
+## 业务边界
 
-Templates must not contain:
+模板不得包含：
 
-- user, product, order, permission, or other business models;
-- business pages, domain workflows, or industry-specific sample data;
-- Todo or similar example business modules;
-- customer project code.
+- 用户、商品、订单、权限或其他业务模型；
+- 业务页面、领域流程或行业相关示例数据；
+- Todo 或类似的示例业务模块；
+- 客户项目代码。
 
-Neutral infrastructure such as an application-ready placeholder page or a backend `/health` endpoint is allowed.
+允许保留中性的基础设施内容，例如等待开发的空白页面或后端 `/health` 健康检查接口。
 
-## Self-Containment
+## 自包含要求
 
-A template must not use:
+模板不得使用：
 
-- repository-root shared packages or configuration files;
-- workspace dependencies on sibling directories;
-- references to another template;
-- local symbolic links;
-- developer-machine private files.
+- 语言仓库根目录的共享包或共享配置；
+- 指向同级目录的工作区依赖；
+- 对其他模板的引用；
+- 本地符号链接；
+- 开发者机器上的私有文件。
 
-## Minimum Template Files
+## 模板最低文件结构
 
-A concrete template contains, as applicable to its technology stack:
+具体模板根据技术栈至少包含以下适用内容：
 
 ```text
 <template-id>/
@@ -50,18 +50,25 @@ A concrete template contains, as applicable to its technology stack:
 ├── AGENTS.md
 ├── .gitignore
 ├── .env.example
-├── dependency declaration
-├── dependency lock file
-├── source code
-└── infrastructure tests
+├── 依赖声明文件
+├── 依赖锁文件
+├── 源代码
+└── 基础设施测试
 ```
 
-The template ID must equal its directory name. The name describes technology and architecture, not a business domain.
+模板 ID 必须与目录名一致。模板名称应描述技术和架构，不得使用业务领域命名。
 
-## Local Validation
+## 本地验证
 
-Each template documents its own install, development, check, test, and build commands. Before merging changes to `main`, run every command declared by that template and confirm the template still works from its own directory.
+每个模板必须在自己的文档中声明安装、开发、检查、测试和构建命令。修改合入 `main` 前，应当在模板自身目录中执行全部声明命令，确认模板仍然可用。
 
-## Removal
+## 删除模板
 
-If a template is no longer necessary, remove its directory, its `templates.yaml` entry, every related `profiles.yaml` entry, and its persistent development branch. Git history preserves the removed implementation; no deprecated or archived state is maintained.
+如果某个模板已经没有继续保留的必要，应直接删除：
+
+1. 模板目录；
+2. `templates.yaml` 中对应的模板条目；
+3. `profiles.yaml` 中引用该模板的组合条目；
+4. 对应的长期开发分支。
+
+历史实现由 Git 历史保留，不维护 Deprecated、Archived 或其他废弃状态。
