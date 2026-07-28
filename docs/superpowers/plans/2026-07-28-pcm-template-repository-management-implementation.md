@@ -727,23 +727,12 @@ Run:
 ./scripts/status-all.sh
 ```
 
-Expected output contains:
+Expected output contains blocks for `root`, `frontend`, and `python`, all on branch `main`.
 
-```text
-[root]
-branch: main
-status: clean
-
-[frontend]
-branch: main
-status: clean
-
-[python]
-branch: main
-status: clean
-```
-
-Paths appear between each header and branch line.
+- `frontend` and `python` report `status: clean`.
+- `root` may report `status: dirty` at this step because `scripts/status-all.sh` has not been committed yet.
+- Paths appear between each header and branch line.
+- Final integration verification after the commit must report all three repositories as clean.
 
 - [ ] **Step 4: Verify dirty and missing reporting without changing tracked content**
 
