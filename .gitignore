@@ -1,0 +1,5 @@
+.DS_Store
+
+# Independent nested Git repositories
+/repositories/pcm-frontend-templates/
+/repositories/pcm-python-templates/

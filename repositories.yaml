@@ -1,0 +1,10 @@
+repositories:
+  - id: frontend
+    name: PCM Frontend Templates
+    path: repositories/pcm-frontend-templates
+    default_branch: main
+
+  - id: python
+    name: PCM Python Templates
+    path: repositories/pcm-python-templates
+    default_branch: main
