@@ -418,7 +418,7 @@ Run:
 
 ```bash
 rg -n "business-free|self-contained|simplest|final decision|no existing combination" docs/template-contract.md docs/selection-guide.md
-if rg -n "Core|Supported|Experimental|Deprecated|Archived|CI|customer tracking|automatic update" docs/template-contract.md docs/selection-guide.md; then exit 1; else echo "scope: ok"; fi
+if rg -ni "^(status|tier|maturity|release version):|^#{1,6}[[:space:]]+(Core|Supported|Experimental|Deprecated|Archived)$|customer tracking is required|automatic dependency update" docs/template-contract.md docs/selection-guide.md; then exit 1; else echo "scope: ok"; fi
 ```
 
 Expected:
