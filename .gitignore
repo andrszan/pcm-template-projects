@@ -1,5 +1,9 @@
 .DS_Store
 
+# editor files
+.vscode/*
+.idea/*
+
 # Independent nested Git repositories
 /repositories/pcm-frontend-templates/
 /repositories/pcm-python-templates/
