@@ -7,3 +7,7 @@
 # Independent nested Git repositories
 /repositories/pcm-frontend-templates/
 /repositories/pcm-python-templates/
+
+# Playwright
+.playwright-mcp/
+.playwright-cli/
