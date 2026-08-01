@@ -46,4 +46,4 @@ template-projects/
 
 ## 当前范围
 
-正式模板以 `templates.yaml` 为准，预设技术组合以 `profiles.yaml` 为准。当前已登记前端模板；尚未登记预设前后端技术组合。
+正式模板以 `templates.yaml` 为准，预设技术组合以 `profiles.yaml` 为准。当前已登记前端与 Python API 模板；尚未登记预设前后端技术组合。
