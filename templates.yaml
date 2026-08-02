@@ -2,6 +2,9 @@ templates:
   - id: nextjs-shadcn-web-app
     repository: frontend
     path: templates/nextjs-shadcn-web-app
+  - id: vite-react-shadcn-spa
+    repository: frontend
+    path: templates/vite-react-shadcn-spa
   - id: fastapi-sqlalchemy-mysql-api
     repository: python
     path: templates/fastapi-sqlalchemy-mysql-api
