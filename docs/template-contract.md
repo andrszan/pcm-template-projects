@@ -15,7 +15,7 @@ PCM 不扫描目录自动发现模板。只有同时满足模板准入要求、�
 
 管理文件的职责如下：
 
-- `repositories.yaml`：语言仓库的稳定 ID、本地路径与默认分支。
+- `repositories.yaml`：语言仓库的稳定 ID、名称、本地路径、远程 Git 地址与默认分支。
 - `templates.yaml`：正式模板的跨仓库定位。
 - 模板目录的 `template.yaml`：模板自身的身份、用途、选型标签和标准命令。
 - `profiles.yaml`：已确认可复用的多模板技术组合；单个模板不是 profile。
@@ -26,6 +26,14 @@ PCM 不扫描目录自动发现模板。只有同时满足模板准入要求、�
 上层索引和 profile 不重复模板的技术栈、依赖版本或命令。README 可以为可读性重复命令，但不得定义不同于 `template.yaml` 和依赖声明文件的命令。
 
 ## 元数据格式
+
+### `repositories.yaml`
+
+每个语言仓库条目必须包含唯一的 `id`、面向人的 `name`、工作区相对 `path`、可供 `bootstrap.sh` 克隆的 `remote` 和 `default_branch`。
+
+- `path` 不得是绝对路径或包含 `..`。
+- `remote` 必须指向该语言仓库的公开 Git 地址。
+- `default_branch` 必须与远程默认分支一致。
 
 ### `templates.yaml`
 

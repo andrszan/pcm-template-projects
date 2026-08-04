@@ -22,11 +22,19 @@ template-projects/
 
 ## 管理文件
 
-- `repositories.yaml`：语言仓库及其本地路径。
+- `repositories.yaml`：语言仓库、本地路径、远程地址与默认分支。
 - `templates.yaml`：正式模板索引。
 - `profiles.yaml`：预设前后端技术组合。
 - `docs/template-contract.md`：模板必须满足的最低要求。
 - `docs/selection-guide.md`：根据项目需求选择架构组合的标准。
+
+## 仓库地址
+
+- 上层管理仓库：https://github.com/andrszan/pcm-template-projects
+- 前端模板仓库：https://github.com/andrszan/pcm-frontend-templates
+- Python 模板仓库：https://github.com/andrszan/pcm-python-templates
+
+`repositories.yaml` 记录两个语言仓库的本地路径、远程地址和默认分支；上层管理仓库自身不作为语言仓库重复登记。
 
 ## 常用命令
 
