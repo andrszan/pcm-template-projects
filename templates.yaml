@@ -8,3 +8,9 @@ templates:
   - id: fastapi-sqlalchemy-mysql-api
     repository: python
     path: templates/fastapi-sqlalchemy-mysql-api
+  - id: fastapi-sqlalchemy-postgresql-api
+    repository: python
+    path: templates/fastapi-sqlalchemy-postgresql-api
+  - id: fastapi-sqlalchemy-postgresql-async-api
+    repository: python
+    path: templates/fastapi-sqlalchemy-postgresql-async-api
