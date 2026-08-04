@@ -1,1 +1,21 @@
-profiles: []
+profiles:
+  - id: spa-mysql-standard
+    name: 标准 SPA + MySQL
+    description: 面向管理系统、毕设和普通 CRUD 项目的简单前后端分离组合。
+    templates:
+      frontend: vite-react-shadcn-spa
+      backend: fastapi-sqlalchemy-mysql-api
+
+  - id: nextjs-postgresql-web
+    name: Next.js Web + PostgreSQL
+    description: 面向需要服务端渲染能力或 PostgreSQL 数据能力的标准 Web 应用组合。
+    templates:
+      frontend: nextjs-shadcn-web-app
+      backend: fastapi-sqlalchemy-postgresql-api
+
+  - id: nextjs-postgresql-async
+    name: Next.js Web + 异步 PostgreSQL API
+    description: 面向大量外部 I/O、流式交互或高并发连接需求的 Web 应用组合。
+    templates:
+      frontend: nextjs-shadcn-web-app
+      backend: fastapi-sqlalchemy-postgresql-async-api

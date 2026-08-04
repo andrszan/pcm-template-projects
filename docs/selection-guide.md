@@ -80,6 +80,24 @@
 - 普通 CRUD 不应仅因为“异步更先进”就选择复杂异步架构。
 - 确实存在大量并发网络请求或外部服务调用时，再重点考虑异步 I/O。
 
+## 当前预设组合
+
+`profiles.yaml` 当前登记以下 3 个已有组合：
+
+### `spa-mysql-standard`
+
+使用 `vite-react-shadcn-spa` 与 `fastapi-sqlalchemy-mysql-api`。优先用于不需要 SEO 或服务端渲染的管理系统、毕设和普通 CRUD 项目；当项目没有 PostgreSQL 或异步 I/O 硬性要求时，这是最简单的默认方案。
+
+### `nextjs-postgresql-web`
+
+使用 `nextjs-shadcn-web-app` 与 `fastapi-sqlalchemy-postgresql-api`。用于明确需要 Next.js 服务端渲染能力、SEO，或需要 PostgreSQL 数据能力的标准 Web 应用；普通数据库访问保持同步，不因技术偏好升级为异步。
+
+### `nextjs-postgresql-async`
+
+使用 `nextjs-shadcn-web-app` 与 `fastapi-sqlalchemy-postgresql-async-api`。只有项目确实存在大量外部 I/O、流式交互或高并发连接需求时选择。该组合提供异步应用与数据库基础设施，不代表已经接入 AI SDK、SSE、WebSocket、向量存储或任何业务能力。
+
+Profile 不是模板兼容白名单。未登记的正式模板仍可根据项目硬性要求临时组合，但必须标记为新建议，不得描述成已有预设；同一需求存在已有 Profile 时优先选择最简单的适用项。
+
 ## 组合决策步骤
 
 1. 判断项目的工程形态和硬性约束。

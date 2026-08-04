@@ -46,4 +46,6 @@ template-projects/
 
 ## 当前范围
 
-正式模板以 `templates.yaml` 为准，预设技术组合以 `profiles.yaml` 为准。当前已登记前端与 Python API 模板；尚未登记预设前后端技术组合。
+正式模板以 `templates.yaml` 为准，预设技术组合以 `profiles.yaml` 为准。当前已登记前端与 Python API 模板，以及 3 个面向常规 SPA、PostgreSQL Web 应用和异步 I/O 场景的预设组合。
+
+Profile 表示经过确认、可复用的多模板组合，不是全部模板的排列组合。未登记的模板组合仍可在满足项目硬性要求时作为新建议提出，但不得描述成已有预设。

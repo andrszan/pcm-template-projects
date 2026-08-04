@@ -73,6 +73,29 @@ commands:
 - 命令必须对应模板已有的脚本或命令，并与 README 保持一致。
 - 不在 `template.yaml` 中记录仓库、登记状态、分支、提交、版本、profile、远程地址或依赖版本快照。
 
+### `profiles.yaml`
+
+顶层仅包含 `profiles` 列表。每个 Profile 表示一个经过确认、可复用的多模板组合：
+
+```yaml
+profiles:
+  - id: spa-mysql-standard
+    name: 标准 SPA + MySQL
+    description: 面向管理系统、毕设和普通 CRUD 项目的简单前后端分离组合。
+    templates:
+      frontend: vite-react-shadcn-spa
+      backend: fastapi-sqlalchemy-mysql-api
+```
+
+字段要求：
+
+- `id`：全局唯一的小写 kebab-case Profile 标识；不与模板 ID 共用命名空间。
+- `name`：面向人的简短组合名称；`description` 只说明组合适用的工程形态。
+- `templates`：必须且只包含 `frontend` 和 `backend`。`frontend` 必须引用 `templates.yaml` 中 `repository: frontend` 的正式模板 ID；`backend` 必须引用 `repository: python` 的正式模板 ID。
+- 同一组前后端模板不得重复登记为多个 Profile。Profile 是稳定预设，不是所有模板的兼容矩阵；没有登记的模板仍可按项目硬性要求提出新组合建议。
+- Profile 不重复模板的技术栈、tags、依赖版本、命令或环境变量，也不记录状态、分支、提交、版本、部署拓扑或客户业务配置。
+- 删除或重命名模板前，必须同步更新所有引用该模板的 Profile。
+
 ## 必须满足的要求
 
 每个模板都必须：
