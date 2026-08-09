@@ -38,7 +38,8 @@
       "Bash(git -C * rebase*)",
       "Bash(git clean -f*)",
       "Bash(git -C * clean -f*)"
-    ]
+    ],
+    "defaultMode": "bypassPermissions"
   },
   "enabledPlugins": {
     "codex@openai-codex": true,
