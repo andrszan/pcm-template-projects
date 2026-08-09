@@ -2,7 +2,7 @@
 
 本仓库是 PCM 在人工市场验证阶段使用的基础架构模板上层管理仓库。
 
-它负责管理语言仓库位置、正式模板索引、预设技术组合、模板准入规则和架构选型标准；不存放客户项目，也不直接存放具体的前端或后端模板代码。
+它负责管理语言仓库位置、正式模板索引、模板准入规则和架构选型标准；不存放客户项目，也不直接存放具体的前端或后端模板代码。
 
 ## 工作区结构
 
@@ -10,7 +10,6 @@
 template-projects/
 ├── repositories.yaml
 ├── templates.yaml
-├── profiles.yaml
 ├── docs/
 ├── scripts/
 └── repositories/
@@ -24,9 +23,8 @@ template-projects/
 
 - `repositories.yaml`：语言仓库、本地路径、远程地址与默认分支。
 - `templates.yaml`：正式模板索引。
-- `profiles.yaml`：预设前后端技术组合。
 - `docs/template-contract.md`：模板必须满足的最低要求。
-- `docs/selection-guide.md`：根据项目需求选择架构组合的标准。
+- `docs/selection-guide.md`：根据项目需求选择项目起点的标准。
 
 ## 仓库地址
 
@@ -54,6 +52,6 @@ template-projects/
 
 ## 当前范围
 
-正式模板以 `templates.yaml` 为准，预设技术组合以 `profiles.yaml` 为准。当前已登记前端与 Python API 模板，以及 3 个面向常规 SPA、PostgreSQL Web 应用和异步 I/O 场景的预设组合。
+正式模板以 `templates.yaml` 为准，当前已登记前端与 Python API 项目起点。每个模板的技术事实和标准命令以其目录中的 `template.yaml` 为准。
 
-Profile 表示经过确认、可复用的多模板组合，不是全部模板的排列组合。未登记的模板组合仍可在满足项目硬性要求时作为新建议提出，但不得描述成已有预设。
+PCM 不维护预设技术组合。AI 根据项目要求独立选择需要的模板，并在派生项目中完成裁剪、集成和验证。

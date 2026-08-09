@@ -18,12 +18,11 @@ PCM 不扫描目录自动发现模板。只有同时满足模板准入要求、�
 - `repositories.yaml`：语言仓库的稳定 ID、名称、本地路径、远程 Git 地址与默认分支。
 - `templates.yaml`：正式模板的跨仓库定位。
 - 模板目录的 `template.yaml`：模板自身的身份、用途、选型标签和标准命令。
-- `profiles.yaml`：已确认可复用的多模板技术组合；单个模板不是 profile。
 - 模板的依赖声明文件与锁文件：包管理、依赖版本和脚本实现。
 - 模板 `README.md`：面向人的安装、开发、验证和部署说明。
 - 模板 `AGENTS.md`：修改边界与 AI 协作规则。
 
-上层索引和 profile 不重复模板的技术栈、依赖版本或命令。README 可以为可读性重复命令，但不得定义不同于 `template.yaml` 和依赖声明文件的命令。
+上层索引不重复模板的技术栈、依赖版本或命令。README 可以为可读性重复命令，但不得定义不同于 `template.yaml` 和依赖声明文件的命令。
 
 ## 元数据格式
 
@@ -52,7 +51,7 @@ templates:
 - `repository`：必须引用 `repositories.yaml` 中已有的仓库 ID。
 - `path`：必须是所属语言仓库内的相对路径，不得使用绝对路径或 `..`；其目录名必须等于 `id`。
 
-不得添加 `name`、`description`、`status`、`version`、`branch`、`revision`、`stack`、`commands` 或 `profile` 等字段。分支是开发流程，技术事实属于模板自身元数据，当前不维护状态或多版本索引。
+不得添加 `name`、`description`、`status`、`version`、`branch`、`revision`、`stack` 或 `commands` 等字段。分支是开发流程，技术事实属于模板自身元数据，当前不维护状态或多版本索引。
 
 ### 模板 `template.yaml`
 
@@ -79,30 +78,7 @@ commands:
 - `tags` 为非空的小写 kebab-case 字符串列表，只描述已实际具备的技术或能力；已安装但未接入的依赖不得作为能力标签。
 - `commands.install`、`commands.dev`、`commands.check`、`commands.test`、`commands.build` 必填。存在端到端验证时可添加 `commands.e2e`，但不将端到端验证混入 `test`。
 - 命令必须对应模板已有的脚本或命令，并与 README 保持一致。
-- 不在 `template.yaml` 中记录仓库、登记状态、分支、提交、版本、profile、远程地址或依赖版本快照。
-
-### `profiles.yaml`
-
-顶层仅包含 `profiles` 列表。每个 Profile 表示一个经过确认、可复用的多模板组合：
-
-```yaml
-profiles:
-  - id: spa-mysql-standard
-    name: 标准 SPA + MySQL
-    description: 面向管理系统、毕设和普通 CRUD 项目的简单前后端分离组合。
-    templates:
-      frontend: vite-react-shadcn-spa
-      backend: fastapi-sqlalchemy-mysql-api
-```
-
-字段要求：
-
-- `id`：全局唯一的小写 kebab-case Profile 标识；不与模板 ID 共用命名空间。
-- `name`：面向人的简短组合名称；`description` 只说明组合适用的工程形态。
-- `templates`：必须且只包含 `frontend` 和 `backend`。`frontend` 必须引用 `templates.yaml` 中 `repository: frontend` 的正式模板 ID；`backend` 必须引用 `repository: python` 的正式模板 ID。
-- 同一组前后端模板不得重复登记为多个 Profile。Profile 是稳定预设，不是所有模板的兼容矩阵；没有登记的模板仍可按项目硬性要求提出新组合建议。
-- Profile 不重复模板的技术栈、tags、依赖版本、命令或环境变量，也不记录状态、分支、提交、版本、部署拓扑或客户业务配置。
-- 删除或重命名模板前，必须同步更新所有引用该模板的 Profile。
+- 不在 `template.yaml` 中记录仓库、登记状态、分支、提交、版本、远程地址或依赖版本快照。
 
 ## 必须满足的要求
 
@@ -138,6 +114,19 @@ profiles:
 - 对其他模板的引用；
 - 本地符号链接；
 - 开发者机器上的私有文件。
+
+## 自由组合与派生验证
+
+PCM 只维护独立的正式模板，不维护预设技术组合或完整兼容矩阵。选型时应根据项目要求分别选择需要的模板，不因惯用搭配绑定无关技术。
+
+模板自包含只保证其能够独立使用，不代表任意模板之间无条件兼容。多个模板复制到派生项目后，项目开发者必须按实际需求：
+
+1. 移除不需要的页面、依赖和基础设施；
+2. 明确通信协议、数据格式、环境变量、跨域、认证和部署边界；
+3. 执行每个模板声明的验证命令；
+4. 验证关键接口及其他跨项目契约，再进入正式功能开发。
+
+真实的不兼容约束应作为选型事实说明，不通过预设组合替代派生项目验证。
 
 ## 模板最低文件结构
 
@@ -183,15 +172,14 @@ profiles:
 
 普通项目更新直接在 `main` 完成；需要独立评审或隔离时使用短期分支，验证后合并回 `main`。`id`、`repository` 与 `path` 未变化时，不修改 `templates.yaml`；技术定位或标准命令变化时，同步更新 `template.yaml` 与 README。
 
-首版不维护旧 ID 别名或迁移表。确需重命名时，同步移动项目目录、更新项目 `id`、上层 `templates.yaml` 和所有 `profiles.yaml` 引用，并移除旧 ID。
+首版不维护旧 ID 别名或迁移表。确需重命名时，同步移动项目目录、更新项目 `id` 和上层 `templates.yaml`，并移除旧 ID。
 
 ### 删除项目
 
 如果某个项目起点已经没有继续保留的必要，应直接删除，不维护 Deprecated、Archived 或其他废弃状态：
 
-1. 从 `profiles.yaml` 移除引用该项目的组合条目；
-2. 从 `templates.yaml` 移除该项目条目，使其不再被正式选型；
-3. 从所属语言仓库 `main` 删除项目目录；
-4. 最终检查不存在残留文档、索引或 profile 引用。
+1. 从 `templates.yaml` 移除该项目条目，使其不再被正式选型；
+2. 从所属语言仓库 `main` 删除项目目录；
+3. 最终检查不存在残留文档或索引引用。
 
 历史实现由 Git 历史保留。
