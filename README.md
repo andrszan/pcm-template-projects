@@ -8,8 +8,7 @@
 
 ```text
 template-projects/
-├── repositories.yaml
-├── templates.yaml
+├── catalog.json
 ├── docs/
 ├── scripts/
 └── repositories/
@@ -21,8 +20,7 @@ template-projects/
 
 ## 管理文件
 
-- `repositories.yaml`：语言仓库、本地路径、远程地址与默认分支。
-- `templates.yaml`：正式模板索引。
+- `catalog.json`：语言仓库地址、默认分支与正式模板目录，也是 PCM 选型模型的输入。
 - `docs/template-contract.md`：模板必须满足的最低要求。
 - `docs/selection-guide.md`：根据项目需求选择项目起点的标准。
 
@@ -32,7 +30,7 @@ template-projects/
 - 前端模板仓库：https://github.com/andrszan/pcm-frontend-templates
 - Python 模板仓库：https://github.com/andrszan/pcm-python-templates
 
-`repositories.yaml` 记录两个语言仓库的本地路径、远程地址和默认分支；上层管理仓库自身不作为语言仓库重复登记。
+`catalog.json` 记录两个语言仓库及其正式模板；上层管理仓库自身不作为语言仓库重复登记。本地仓库统一放在 `repositories/<repository.name>`。
 
 ## 常用命令
 
@@ -42,7 +40,7 @@ template-projects/
 ./scripts/status-all.sh
 ```
 
-在配置真实远程地址后，克隆本地缺失的语言仓库：
+克隆本地缺失的语言仓库：
 
 ```bash
 ./scripts/bootstrap.sh
@@ -52,6 +50,6 @@ template-projects/
 
 ## 当前范围
 
-正式模板以 `templates.yaml` 为准，当前已登记前端与 Python API 项目起点。每个模板的技术事实和标准命令以其目录中的 `template.yaml` 为准。
+正式模板以 `catalog.json` 为准，当前已登记前端与 Python API 项目起点。模板的安装、开发和验证方式以模板 README 与依赖声明中的实际命令为准。
 
 PCM 不维护预设技术组合。AI 根据项目要求独立选择需要的模板，并在派生项目中完成裁剪、集成和验证。

@@ -9,76 +9,72 @@ PCM 模板是一个业务无关、完全自包含、最小可运行的基础架�
 - **模板维护模式**：目录仍属于 PCM 模板仓库时，只能修改业务无关的基础设施；不得加入客户业务或领域实现。
 - **派生项目开发模式**：模板复制到独立项目后，可以根据用户已确认的需求实现业务；仍不预建未确认的业务、依赖、基础设施或空架构层。
 
-## 登记与事实来源
+## 事实来源
 
-PCM 不扫描目录自动发现模板。只有同时满足模板准入要求、存在于所属语言仓库默认分支，并登记在上层 `templates.yaml` 中的目录，才是正式可选模板。
+PCM 不扫描目录自动发现模板。只有同时满足模板准入要求、存在于所属仓库默认分支，并登记在上层 `catalog.json` 中的目录，才是正式可选模板。
 
-管理文件的职责如下：
+各文件职责如下：
 
-- `repositories.yaml`：语言仓库的稳定 ID、名称、本地路径、远程 Git 地址与默认分支。
-- `templates.yaml`：正式模板的跨仓库定位。
-- 模板目录的 `template.yaml`：模板自身的身份、用途、选型标签和标准命令。
-- 模板的依赖声明文件与锁文件：包管理、依赖版本和脚本实现。
-- 模板 `README.md`：面向人的安装、开发、验证和部署说明。
+- `catalog.json`：仓库地址、默认分支、正式模板身份、选型说明和跨仓库路径的唯一来源。
+- 模板依赖声明与锁文件：包管理方式、依赖版本和可执行脚本的事实来源。
+- 模板 `README.md`：面向人的安装、开发、检查、测试、构建和部署说明。
 - 模板 `AGENTS.md`：修改边界与 AI 协作规则。
 
-上层索引不重复模板的技术栈、依赖版本或命令。README 可以为可读性重复命令，但不得定义不同于 `template.yaml` 和依赖声明文件的命令。
+模板目录不再维护 `template.yaml` 或其他重复元数据文件。
 
-## 元数据格式
+## `catalog.json` 格式
 
-### `repositories.yaml`
+目录使用以下结构：
 
-每个语言仓库条目必须包含唯一的 `id`、面向人的 `name`、工作区相对 `path`、可供 `bootstrap.sh` 克隆的 `remote` 和 `default_branch`。
-
-- `path` 不得是绝对路径或包含 `..`。
-- `remote` 必须指向该语言仓库的公开 Git 地址。
-- `default_branch` 必须与远程默认分支一致。
-
-### `templates.yaml`
-
-顶层仅包含 `templates` 列表。每个正式模板条目必须且只包含：
-
-```yaml
-templates:
-  - id: nextjs-shadcn-web-app
-    repository: frontend
-    path: templates/nextjs-shadcn-web-app
+```json
+{
+  "schema_version": 1,
+  "repositories": {
+    "example": {
+      "git_url": "https://example.com/pcm/example-templates.git",
+      "default_branch": "main",
+      "name": "example-templates",
+      "description": "示例模板仓库。",
+      "templates": [
+        {
+          "id": "example-template",
+          "path": "templates/example-template",
+          "name": "示例项目起点",
+          "description": "说明适用场景、关键技术、已提供能力、不包含的能力和选择边界。"
+        }
+      ]
+    }
+  }
+}
 ```
 
-字段要求：
+### 根字段
 
-- `id`：全局唯一的小写 kebab-case 标识，必须与模板目录名和 `template.yaml` 的 `id` 一致。
-- `repository`：必须引用 `repositories.yaml` 中已有的仓库 ID。
-- `path`：必须是所属语言仓库内的相对路径，不得使用绝对路径或 `..`；其目录名必须等于 `id`。
+- `schema_version`：正整数；当前固定为 `1`。
+- `repositories`：以稳定仓库 ID 为键的非空对象。
 
-不得添加 `name`、`description`、`status`、`version`、`branch`、`revision`、`stack` 或 `commands` 等字段。分支是开发流程，技术事实属于模板自身元数据，当前不维护状态或多版本索引。
+### 仓库字段
 
-### 模板 `template.yaml`
+每个仓库必须且只包含：
 
-每个模板必须包含以下最小字段：
+- `git_url`：可拉取该仓库的公开 Git 地址。
+- `default_branch`：与远程默认分支一致。
+- `name`：仓库本地目录名；必须唯一，不得包含 `/`、`\` 或 `..`。
+- `description`：面向人和选型模型的简短仓库说明。
+- `templates`：该仓库中正式模板的非空列表。
 
-```yaml
-id: nextjs-shadcn-web-app
-name: Next.js + shadcn/ui 前端模板
-description: 面向独立 Web 应用起步的业务无关 Next.js App Router 模板。
-tags:
-  - web
-commands:
-  install: pnpm install
-  dev: pnpm dev
-  check: pnpm type-check && pnpm lint
-  test: pnpm test:run
-  build: pnpm build
-```
+本地管理脚本将仓库放在 `repositories/<name>`。
 
-字段要求：
+### 模板字段
 
-- `id`、`name`、`description`、`tags` 和 `commands` 必填。
-- `name` 描述技术和架构，不得使用业务领域命名；`description` 只说明用途与工程形态。
-- `tags` 为非空的小写 kebab-case 字符串列表，只描述已实际具备的技术或能力；已安装但未接入的依赖不得作为能力标签。
-- `commands.install`、`commands.dev`、`commands.check`、`commands.test`、`commands.build` 必填。存在端到端验证时可添加 `commands.e2e`，但不将端到端验证混入 `test`。
-- 命令必须对应模板已有的脚本或命令，并与 README 保持一致。
-- 不在 `template.yaml` 中记录仓库、登记状态、分支、提交、版本、远程地址或依赖版本快照。
+每个模板必须且只包含：
+
+- `id`：全局唯一的小写 kebab-case 标识，必须与模板目录名一致。
+- `path`：所属仓库内的相对路径，不得是绝对路径或包含 `..`。
+- `name`：清楚表达技术和工程形态，不得使用业务领域命名。
+- `description`：提供足以支持选型的自然语言说明，包括适用场景、关键技术、默认具备的基础设施、明确不包含的能力，以及与同类模板的选择边界。
+
+模板项不增加 `role`、`capabilities`、`tags`、`commands`、`status`、`version`、`branch` 或 `revision`。PCM 选型模型根据项目初稿、选型指南、模板名称和说明作出判断。
 
 ## 必须满足的要求
 
@@ -89,10 +85,13 @@ commands:
 3. 不依赖语言仓库根目录或其他模板目录中的运行时文件；
 4. 只使用一种明确的包管理方式，并保留与之匹配的唯一锁文件；
 5. 需要环境变量时提供 `.env.example`；
-6. 包含 `template.yaml`、`README.md` 和 `AGENTS.md`；
+6. 包含 `README.md` 和 `AGENTS.md`；
 7. 包含能够证明基础设施正常工作的最低限度测试；
-8. 修改合入 `main` 前必须完成本地验证；
-9. 不得包含真实密钥、个人绝对路径和生成后的构建产物。
+8. 在 README 中声明安装、开发、检查、测试和构建命令；
+9. 修改合入默认分支前完成本地验证；
+10. 不得包含真实密钥、个人绝对路径和生成后的构建产物。
+
+README 中的命令必须对应项目中真实存在的工具或脚本，不得声明无法执行的命令。
 
 ## 业务边界
 
@@ -123,7 +122,7 @@ PCM 只维护独立的正式模板，不维护预设技术组合或完整兼容�
 
 1. 移除不需要的页面、依赖和基础设施；
 2. 明确通信协议、数据格式、环境变量、跨域、认证和部署边界；
-3. 执行每个模板声明的验证命令；
+3. 执行每个模板 README 声明的验证命令；
 4. 验证关键接口及其他跨项目契约，再进入正式功能开发。
 
 真实的不兼容约束应作为选型事实说明，不通过预设组合替代派生项目验证。
@@ -134,7 +133,6 @@ PCM 只维护独立的正式模板，不维护预设技术组合或完整兼容�
 
 ```text
 <template-id>/
-├── template.yaml
 ├── README.md
 ├── AGENTS.md
 ├── .gitignore
@@ -145,41 +143,37 @@ PCM 只维护独立的正式模板，不维护预设技术组合或完整兼容�
 └── 基础设施测试
 ```
 
-模板 ID 必须与目录名一致。模板名称应描述技术和架构，不得使用业务领域命名。
-
-## 本地验证
-
-每个模板必须在自己的文档中声明安装、开发、检查、测试和构建命令。修改合入 `main` 前，应当在模板自身目录中执行全部声明命令，确认模板仍然可用。
+模板目录名必须与 `catalog.json` 中的模板 ID 一致。
 
 ## 生命周期
 
 ### 开发与准入
 
-1. 日常直接在所属语言仓库的 `main` 分支修改对应项目目录；需要独立评审、并行开发或隔离较大变更时，才创建短期分支，完成后合并回 `main`。
-2. 补齐 `template.yaml`，确认其 ID、目录名和拟登记 ID 一致；确认命令与 README、依赖声明文件一致。
-3. 检查不存在真实密钥、个人路径、构建缓存、测试报告、业务样例或其他不应提交的文件；从独立复制目录验证项目不依赖工作区或同级项目。
-4. 在项目目录执行 README 声明的完整本地验证，维护者审查结果后才能登记。
+1. 日常直接在所属语言仓库的默认分支修改对应项目目录；需要独立评审、并行开发或隔离较大变更时，才创建短期分支。
+2. 确认 README 命令与依赖声明及实际工具一致，并从独立复制目录验证项目不依赖工作区或同级项目。
+3. 检查不存在真实密钥、个人路径、构建缓存、测试报告、业务样例或其他不应提交的文件。
+4. 执行 README 声明的完整本地验证，维护者审查结果后才能登记。
 
 ### 正式登记
 
-1. 确认 `main` 中存在完整项目目录及 `template.yaml`。
-2. 再将 `id`、`repository` 和 `path` 写入上层 `templates.yaml`。
-3. 校验项目 ID 唯一、仓库引用存在、路径安全，并且上层 ID、目录名和 `template.yaml.id` 完全一致。
+1. 确认所属仓库默认分支中存在完整项目目录。
+2. 将仓库信息以及模板的 `id`、`path`、`name` 和 `description` 写入上层 `catalog.json`。
+3. 校验仓库名和模板 ID 唯一、路径安全，并确认模板 ID 与目录名一致。
 
-上层仓库和语言仓库是独立 Git 仓库，应分别审查和提交，不能假定跨仓库原子提交。宁可在项目已进入默认分支后短暂未登记，也不得让正式索引指向不存在的目录。
+上层仓库和语言仓库是独立 Git 仓库，应分别审查和提交，不能假定跨仓库原子提交。宁可在项目已进入默认分支后短暂未登记，也不得让正式目录指向不存在的路径。
 
 ### 更新与重命名
 
-普通项目更新直接在 `main` 完成；需要独立评审或隔离时使用短期分支，验证后合并回 `main`。`id`、`repository` 与 `path` 未变化时，不修改 `templates.yaml`；技术定位或标准命令变化时，同步更新 `template.yaml` 与 README。
+普通项目更新不修改 `catalog.json`。只有仓库定位或模板的 `id`、`path`、`name`、`description` 变化时，才同步更新中央目录。
 
-首版不维护旧 ID 别名或迁移表。确需重命名时，同步移动项目目录、更新项目 `id` 和上层 `templates.yaml`，并移除旧 ID。
+首版不维护旧 ID 别名或迁移表。确需重命名时，先在语言仓库默认分支移动项目目录，再更新 `catalog.json` 并移除旧 ID。
 
 ### 删除项目
 
-如果某个项目起点已经没有继续保留的必要，应直接删除，不维护 Deprecated、Archived 或其他废弃状态：
+如果某个项目起点没有继续保留的必要：
 
-1. 从 `templates.yaml` 移除该项目条目，使其不再被正式选型；
-2. 从所属语言仓库 `main` 删除项目目录；
-3. 最终检查不存在残留文档或索引引用。
+1. 先从 `catalog.json` 移除模板条目，使其不再参与正式选型；
+2. 再从所属语言仓库默认分支删除模板目录；
+3. 最终检查不存在残留文档或目录引用。
 
 历史实现由 Git 历史保留。

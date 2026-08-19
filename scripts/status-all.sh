@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-CONFIG_FILE="$ROOT_DIR/repositories.yaml"
+CONFIG_FILE="$ROOT_DIR/catalog.json"
 
 print_repository_status() {
   local id="$1"
@@ -37,19 +37,18 @@ print_repository_status() {
 
 print_repository_status root "$ROOT_DIR"
 
-while IFS='|' read -r id relative_path; do
-  [[ -n "$id" && -n "$relative_path" ]] || continue
-  print_repository_status "$id" "$ROOT_DIR/$relative_path"
+while IFS=$'\t' read -r id name; do
+  [[ -n "$id" && -n "$name" ]] || continue
+  print_repository_status "$id" "$ROOT_DIR/repositories/$name"
 done < <(
-  awk '
-    /^[[:space:]]*-[[:space:]]+id:/ {
-      id = $0
-      sub(/^[[:space:]]*-[[:space:]]+id:[[:space:]]*/, "", id)
-    }
-    /^[[:space:]]+path:/ {
-      path = $0
-      sub(/^[[:space:]]+path:[[:space:]]*/, "", path)
-      if (id != "") print id "|" path
-    }
-  ' "$CONFIG_FILE"
+  python3 - "$CONFIG_FILE" <<'PY'
+import json
+import sys
+
+with open(sys.argv[1], encoding="utf-8") as file:
+    repositories = json.load(file)["repositories"]
+
+for repository_id, repository in repositories.items():
+    print(repository_id, repository["name"], sep="\t")
+PY
 )
