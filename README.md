@@ -30,7 +30,7 @@ template-projects/
 - 前端模板仓库：https://github.com/andrszan/pcm-frontend-templates
 - Python 模板仓库：https://github.com/andrszan/pcm-python-templates
 
-`catalog.json` 记录两个语言仓库及其正式模板；上层管理仓库自身不作为语言仓库重复登记。本地仓库统一放在 `repositories/<repository.name>`。
+`catalog.json` 记录两个语言仓库及其正式模板；上层管理仓库自身不作为语言仓库重复登记。本地仓库统一放在 `repositories/<仓库键>`，仓库键就是仓库目录名。
 
 ## 常用命令
 

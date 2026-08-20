@@ -5,10 +5,10 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CONFIG_FILE="$ROOT_DIR/catalog.json"
 EXIT_CODE=0
 
-while IFS=$'\t' read -r id name git_url default_branch; do
-  [[ -n "$id" && -n "$name" ]] || continue
+while IFS=$'\t' read -r id git_url default_branch; do
+  [[ -n "$id" ]] || continue
 
-  target="$ROOT_DIR/repositories/$name"
+  target="$ROOT_DIR/repositories/$id"
 
   if [[ -d "$target/.git" ]]; then
     printf '[%s] present: %s\n' "$id" "$target"
@@ -44,7 +44,6 @@ with open(sys.argv[1], encoding="utf-8") as file:
 for repository_id, repository in repositories.items():
     print(
         repository_id,
-        repository["name"],
         repository["git_url"],
         repository["default_branch"],
         sep="\t",

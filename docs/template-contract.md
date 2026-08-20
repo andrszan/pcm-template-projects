@@ -30,15 +30,15 @@ PCM 不扫描目录自动发现模板。只有同时满足模板准入要求、�
 {
   "schema_version": 1,
   "repositories": {
-    "example": {
+    "example-templates": {
       "git_url": "https://example.com/pcm/example-templates.git",
       "default_branch": "main",
-      "name": "example-templates",
       "description": "示例模板仓库。",
       "templates": [
         {
           "id": "example-template",
           "path": "templates/example-template",
+          "project_type": "frontend",
           "name": "示例项目起点",
           "description": "说明适用场景、关键技术、已提供能力、不包含的能力和选择边界。"
         }
@@ -51,7 +51,7 @@ PCM 不扫描目录自动发现模板。只有同时满足模板准入要求、�
 ### 根字段
 
 - `schema_version`：正整数；当前固定为 `1`。
-- `repositories`：以稳定仓库 ID 为键的非空对象。
+- `repositories`：以仓库目录名为键的非空对象。键必须唯一，不得包含 `/`、`\` 或 `..`。
 
 ### 仓库字段
 
@@ -59,11 +59,10 @@ PCM 不扫描目录自动发现模板。只有同时满足模板准入要求、�
 
 - `git_url`：可拉取该仓库的公开 Git 地址。
 - `default_branch`：与远程默认分支一致。
-- `name`：仓库本地目录名；必须唯一，不得包含 `/`、`\` 或 `..`。
 - `description`：面向人和选型模型的简短仓库说明。
 - `templates`：该仓库中正式模板的非空列表。
 
-本地管理脚本将仓库放在 `repositories/<name>`。
+本地管理脚本将仓库放在 `repositories/<仓库键>`。仓库键只表示真实仓库身份，不按前端/后端或语言分层。
 
 ### 模板字段
 
@@ -71,10 +70,11 @@ PCM 不扫描目录自动发现模板。只有同时满足模板准入要求、�
 
 - `id`：全局唯一的小写 kebab-case 标识，必须与模板目录名一致。
 - `path`：所属仓库内的相对路径，不得是绝对路径或包含 `..`。
+- `project_type`：模板的工程类型。当前允许 `frontend` 或 `backend`；供程序按交付单元过滤，不按仓库推断。
 - `name`：清楚表达技术和工程形态，不得使用业务领域命名。
 - `description`：提供足以支持选型的自然语言说明，包括适用场景、关键技术、默认具备的基础设施、明确不包含的能力，以及与同类模板的选择边界。
 
-模板项不增加 `role`、`capabilities`、`tags`、`commands`、`status`、`version`、`branch` 或 `revision`。PCM 选型模型根据项目初稿、选型指南、模板名称和说明作出判断。
+模板项不增加 `role`、`capabilities`、`tags`、`commands`、`status`、`version`、`branch` 或 `revision`。PCM 选型模型根据项目初稿、选型指南、模板名称和说明作出判断；`project_type` 只用于区分交付单元类型。
 
 ## 必须满足的要求
 
@@ -157,14 +157,14 @@ PCM 只维护独立的正式模板，不维护预设技术组合或完整兼容�
 ### 正式登记
 
 1. 确认所属仓库默认分支中存在完整项目目录。
-2. 将仓库信息以及模板的 `id`、`path`、`name` 和 `description` 写入上层 `catalog.json`。
-3. 校验仓库名和模板 ID 唯一、路径安全，并确认模板 ID 与目录名一致。
+2. 将仓库信息以及模板的 `id`、`path`、`project_type`、`name` 和 `description` 写入上层 `catalog.json`。
+3. 校验仓库键和模板 ID 唯一、路径安全，并确认模板 ID 与目录名一致。
 
 上层仓库和语言仓库是独立 Git 仓库，应分别审查和提交，不能假定跨仓库原子提交。宁可在项目已进入默认分支后短暂未登记，也不得让正式目录指向不存在的路径。
 
 ### 更新与重命名
 
-普通项目更新不修改 `catalog.json`。只有仓库定位或模板的 `id`、`path`、`name`、`description` 变化时，才同步更新中央目录。
+普通项目更新不修改 `catalog.json`。只有仓库定位或模板的 `id`、`path`、`project_type`、`name`、`description` 变化时，才同步更新中央目录。
 
 首版不维护旧 ID 别名或迁移表。确需重命名时，先在语言仓库默认分支移动项目目录，再更新 `catalog.json` 并移除旧 ID。
 

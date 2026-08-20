@@ -37,9 +37,9 @@ print_repository_status() {
 
 print_repository_status root "$ROOT_DIR"
 
-while IFS=$'\t' read -r id name; do
-  [[ -n "$id" && -n "$name" ]] || continue
-  print_repository_status "$id" "$ROOT_DIR/repositories/$name"
+while IFS=$'\t' read -r id; do
+  [[ -n "$id" ]] || continue
+  print_repository_status "$id" "$ROOT_DIR/repositories/$id"
 done < <(
   python3 - "$CONFIG_FILE" <<'PY'
 import json
@@ -48,7 +48,7 @@ import sys
 with open(sys.argv[1], encoding="utf-8") as file:
     repositories = json.load(file)["repositories"]
 
-for repository_id, repository in repositories.items():
-    print(repository_id, repository["name"], sep="\t")
+for repository_id in repositories:
+    print(repository_id)
 PY
 )
