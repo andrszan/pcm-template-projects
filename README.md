@@ -26,9 +26,9 @@ template-projects/
 
 ## 仓库地址
 
-- 上层管理仓库：https://github.com/andrszan/pcm-template-projects
-- 前端模板仓库：https://github.com/andrszan/pcm-frontend-templates
-- Python 模板仓库：https://github.com/andrszan/pcm-python-templates
+- 上层管理仓库：https://gitlab.com/baiyiyu/andrszan/pcm-repository/pcm-template-projects
+- 前端模板仓库：https://gitlab.com/baiyiyu/andrszan/pcm-repository/pcm-frontend-templates
+- Python 模板仓库：https://gitlab.com/baiyiyu/andrszan/pcm-repository/pcm-python-templates
 
 `catalog.json` 记录两个语言仓库及其正式模板；上层管理仓库自身不作为语言仓库重复登记。本地仓库统一放在 `repositories/<仓库键>`，仓库键就是仓库目录名。
 
