@@ -13,7 +13,8 @@
 - 上层仓库只管理文档、索引和辅助脚本。
 - `repositories/pcm-frontend-templates` 是独立的前端模板仓库。
 - `repositories/pcm-python-templates` 是独立的 Python 模板仓库。
-- 上层仓库 `git status` 干净，不代表两个语言仓库也处于干净状态。
+- `repositories/pcm-java-templates` 是独立的 Java 模板仓库。
+- 上层仓库 `git status` 干净，不代表三个语言仓库也处于干净状态。
 - 禁止在工作区根目录执行 `git clean -fdx` 或其他可能删除 ignored 内容的等价命令。
 - 提交内容格式使用 Conventional Commits 规范。
 
