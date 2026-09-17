@@ -31,25 +31,24 @@
     ],
     "ask": [
       "Bash(git push *)",
-      "Bash(git -C * push*)",
-      "Bash(git reset --hard *)",
-      "Bash(git -C * reset --hard*)",
-      "Bash(git rebase *)",
-      "Bash(git -C * rebase*)",
-      "Bash(git clean -f*)",
-      "Bash(git -C * clean -f*)"
+      "Bash(git -C * push*)"
     ],
     "defaultMode": "bypassPermissions"
   },
   "enabledPlugins": {
-    "codex@openai-codex": true,
     "context7@claude-plugins-official": true,
     "playwright@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": false,
     "ponytail@ponytail": true,
-    "taste-skill@taste-skill": true,
+    "taste-skill@taste-skill": false,
     "ui-ux-pro-max@ui-ux-pro-max-skill": true,
     "typescript-lsp@claude-plugins-official": true,
-    "pyright-lsp@claude-plugins-official": true
-  }
+    "pyright-lsp@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "jdtls-lsp@claude-plugins-official": true
+  },
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
 }

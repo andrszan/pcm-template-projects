@@ -1,13 +1,61 @@
-.DS_Store
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Claude Code local settings (per-user, not committed)
+/.claude/settings.local.json
 
 # editor files
 .vscode/*
 .idea/*
 
+# local git worktrees
+.worktrees/
+
+# macOS
+.DS_Store
+
+# ignore files
+/docs/ignore/
+
+# 测试与 UI 浏览器验收截图
+/.test-screenshots/
+
+# playwright
+.playwright/
+.playwright-cli/
+.playwright-mcp/
+
+# Python 测试与运行产物
+**/.coverage
+**/.coverage.*
+**/.pytest_cache/
+**/__pycache__/
+**/*.py[cod]
+/.ruff_cache/
+
+# 工作区媒体脚本的 Python 缓存
+/.claude/skills/media-assets/scripts/__pycache__/
+
+# 根目录若产生 .env 不得入库；各子仓库另有各自规则
+/.env
+/.env.*
+!/.env.example
+
 # Independent nested Git repositories
 /repositories/pcm-frontend-templates/
 /repositories/pcm-python-templates/
+/repositories/pcm-java-templates/
 
-# Playwright
-.playwright-mcp/
-.playwright-cli/
+# Claude worktrees
+.claude/worktrees/
+
+# Claude Agent Plugin runtime files
+.agents/plugins/**/.in_use
+.agents/plugins/**/__pycache__
+.agents/plugins/**/*.pyc
+.agents/plugins/**/.orphaned_at
+.agents/plugins/**/coverage-ui.json
