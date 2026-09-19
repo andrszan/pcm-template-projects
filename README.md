@@ -52,6 +52,6 @@ template-projects/
 
 ## 当前范围
 
-正式模板以 `catalog.json` 为准，当前已登记前端、Python API 与 Java API 项目起点。模板的安装、开发和验证方式以模板 README 与依赖声明中的实际命令为准。
+正式模板以 `catalog.json` 为准，当前已登记前端（React SPA、Vue SPA、Next.js）、Python API 与 Java API 项目起点。模板的安装、开发和验证方式以模板 README 与依赖声明中的实际命令为准。
 
 PCM 不维护预设技术组合。AI 根据项目要求独立选择需要的模板，并在派生项目中完成裁剪、集成和验证。

@@ -19,6 +19,13 @@
           "project_type": "frontend",
           "name": "Vite + React + shadcn/ui 单页应用项目起点",
           "description": "面向不需要服务端渲染的 Web 应用起步的业务无关 Vite React SPA 项目起点。"
+        },
+        {
+          "id": "vite-vue-shadcn-spa",
+          "path": "templates/vite-vue-shadcn-spa",
+          "project_type": "frontend",
+          "name": "Vite + Vue + shadcn-vue 单页应用项目起点",
+          "description": "面向明确要求 Vue 且不需要服务端渲染的独立 Web 应用起步的业务无关 Vite Vue 3 SPA 项目起点；提供 TypeScript、Vue Router、Pinia、TanStack Vue Query、Axios/Zod API 层、vee-validate 表单、Tailwind CSS 4 与完整本地 shadcn-vue 组件集、三态主题、错误边界和通用组合组件，不包含认证、权限、国际化和客户业务。"
         }
       ]
     },
